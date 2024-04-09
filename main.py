@@ -15,6 +15,11 @@ class TicTacToe:
         self.create_fields()
         self.current_player = 'cross'
         self.running = True
+        self.bill = [0,0]
+        
+    def create_bill(self):
+        text_surface = self.myfont.render(f'{self.bill[0]}:{self.bill[1]}', True, 'White')
+        self.screen.blit(text_surface, (20, 20))
 
     def create_fields(self):
         # Создание полей для игры (3х3)
@@ -40,17 +45,19 @@ class TicTacToe:
         for win_position in all_win_positions:
             if win_position <= set(cross_positions) and set(cross_positions):
                 self.display_winner_message('cross wins!', 'Blue')
+                self.bill[0] += 1
                 self.reset_game()
             elif win_position <= set(nought_positions) and set(nought_positions):
                 self.display_winner_message('nought wins!', 'Red')
+                self.bill[1] += 1
                 self.reset_game()
 
     def display_winner_message(self, message, color):
         # Поздравительный текст победителя
         text_surface = self.myfont.render(message, True, color)
-        self.screen.blit(text_surface, (10, 10))
+        self.screen.blit(text_surface, (100, 20))
         pygame.display.update()
-        pygame.time.wait(2000)
+        pygame.time.wait(1000)
 
     def reset_game(self):
         # перезапуск игры
@@ -76,7 +83,7 @@ class TicTacToe:
                 if self.is_board_full():
                     self.fields_group.draw(self.screen)
                     self.display_winner_message('Draw', 'Orange')
-                    pygame.time.wait(2000)
+                    pygame.time.wait(1000)
                     self.reset_game()
                 
     def is_board_full(self):
@@ -112,6 +119,7 @@ class TicTacToe:
         # запуск игры
         while self.running:
             self.screen.fill((47,54,153))
+            self.create_bill()
             self.fields_group.draw(self.screen)
             self.clock.tick(60)
             pygame.display.update() 
